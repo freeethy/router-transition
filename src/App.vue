@@ -4,9 +4,21 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view />
+    <transition :name="direction">
+      <router-view />
+    </transition>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    direction() {
+      return this.$store.state.routerHistory.direction;
+    }
+  }
+};
+</script>
 
 <style>
 #app {
@@ -28,5 +40,33 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.forward-enter-active,
+.forward-leave-active,
+.reverse-enter-active,
+.reverse-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+.forward-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.forward-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.reverse-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.reverse-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
 }
 </style>
